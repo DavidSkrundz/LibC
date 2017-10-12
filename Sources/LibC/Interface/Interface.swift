@@ -137,20 +137,24 @@ public func == (lhs: Interface, rhs: Interface) -> Bool {
 }
 
 public func < (lhs: Interface, rhs: Interface) -> Bool {
-	if (lhs.status.isUp != rhs.status.isUp) {
+	if (lhs.status.isUp == true) != (rhs.status.isUp == true) {
 		return lhs.status.isUp
 	}
 	
-	if (lhs.ipv4.count != rhs.ipv4.count) {
-		return lhs.ipv4.count > rhs.ipv4.count
+	if (lhs.status.isLoopback == true) != (rhs.status.isLoopback == true) {
+		return rhs.status.isLoopback
 	}
 	
-	if (lhs.ipv6.count != rhs.ipv6.count) {
-		return lhs.ipv6.count > rhs.ipv6.count
+	if (lhs.macAddress == .Nil) != (rhs.macAddress == .Nil) {
+		return lhs.macAddress != .Nil
 	}
 	
-	if (lhs.status.isLoopback != rhs.status.isLoopback) {
-		return lhs.status.isLoopback
+	if (lhs.ipv6.isEmpty == true) != (rhs.ipv6.isEmpty == true) {
+		return rhs.ipv6.isEmpty
+	}
+	
+	if (lhs.ipv4.isEmpty == true) != (rhs.ipv4.isEmpty == true) {
+		return rhs.ipv4.isEmpty
 	}
 	
 	return lhs.name < rhs.name
