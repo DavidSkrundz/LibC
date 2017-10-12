@@ -6,7 +6,7 @@
 import CLibC
 
 public struct SocketProtocol: RawRepresentable {
-	public static let IP       = SocketProtocol(rawValue: CLibC.IPPROTO_IP)
+	public static let IPv4     = SocketProtocol(rawValue: CLibC.IPPROTO_IP)
 	public static let IP6      = SocketProtocol(rawValue: CLibC.IPPROTO_HOPOPTS)
 	public static let ICMP     = SocketProtocol(rawValue: CLibC.IPPROTO_ICMP)
 	public static let IGMP     = SocketProtocol(rawValue: CLibC.IPPROTO_IGMP)
@@ -16,14 +16,14 @@ public struct SocketProtocol: RawRepresentable {
 	public static let PUP      = SocketProtocol(rawValue: CLibC.IPPROTO_PUP)
 	public static let UDP      = SocketProtocol(rawValue: CLibC.IPPROTO_UDP)
 	public static let IDP      = SocketProtocol(rawValue: CLibC.IPPROTO_IDP)
-	public static let TP       = SocketProtocol(rawValue: CLibC.IPPROTO_TP)
+	public static let TRANSP   = SocketProtocol(rawValue: CLibC.IPPROTO_TP)
 	public static let IPv6     = SocketProtocol(rawValue: CLibC.IPPROTO_IPV6)
 	public static let Routing  = SocketProtocol(rawValue: CLibC.IPPROTO_ROUTING)
 	public static let Fragment = SocketProtocol(rawValue: CLibC.IPPROTO_FRAGMENT)
 	public static let RSVP     = SocketProtocol(rawValue: CLibC.IPPROTO_RSVP)
 	public static let GRE      = SocketProtocol(rawValue: CLibC.IPPROTO_GRE)
 	public static let ESP      = SocketProtocol(rawValue: CLibC.IPPROTO_ESP)
-	public static let AH       = SocketProtocol(rawValue: CLibC.IPPROTO_AH)
+	public static let AHEADER  = SocketProtocol(rawValue: CLibC.IPPROTO_AH)
 	public static let ICMPv6   = SocketProtocol(rawValue: CLibC.IPPROTO_ICMPV6)
 	public static let None     = SocketProtocol(rawValue: CLibC.IPPROTO_NONE)
 	public static let DSTOPTS  = SocketProtocol(rawValue: CLibC.IPPROTO_DSTOPTS)
