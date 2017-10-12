@@ -6,20 +6,20 @@
 import CLibC
 
 public struct DateTime {
-	private let tm: tm
+	private let c_tm: tm
 	public let date: Date
 	public let time: Time
 	public let timezone: Timezone
 	
 	/// Create a new `DateTime` with the current date and time
 	public init() {
-		self.tm = DateTime.currentDateTime()
+		self.c_tm = DateTime.currentDateTime()
 		var time = timeval()
 		gettimeofday(&time, nil)
 		
-		self.date = Date(self.tm)
-		self.time = Time(self.tm, time)
-		self.timezone = Timezone(self.tm)
+		self.date = Date(self.c_tm)
+		self.time = Time(self.c_tm, time)
+		self.timezone = Timezone(self.c_tm)
 	}
 	
 	internal static func currentDateTime() -> tm {
@@ -31,7 +31,7 @@ public struct DateTime {
 	/// - Returns: The `asctime()` `String` representation of the `DateTime`
 	///            Example: `Sat Jul 30 21:00:50 2016\n`
 	public var cDescription: String {
-		var tm = self.tm
+		var tm = self.c_tm
 		return String(cString: asctime(&tm))
 	}
 }

@@ -56,8 +56,8 @@ public struct Interface {
 			
 			let (type, address) = self.getAddress(ifAddress)
 			switch type {
-				case .IPv4(_): interface.ipv4.append(address)
-				case .IPv6(_): interface.ipv6.append(address)
+				case .IPv4: interface.ipv4.append(address)
+				case .IPv6: interface.ipv6.append(address)
 				case .none: ()
 			}
 			

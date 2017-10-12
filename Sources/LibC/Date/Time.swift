@@ -23,13 +23,14 @@ public struct Time {
 		                                         nanoseconds: Int32(t.tv_usec))
 	}
 	
-	internal init(_ time: tm, _ t: timeval) {
+	internal init(_ time: tm, _ timeval: timeval) {
 		self.timeInfo = TimeInfo(hours: UInt8(time.tm_hour),
 		                         minutes: UInt8(time.tm_min),
 		                         seconds: UInt8(time.tm_sec))
 		
-		self.preciseTimeInfo = PrecisionTimeInfo(seconds: t.tv_sec,
-		                                         nanoseconds: Int32(t.tv_usec))
+		let nanoseconds = Int32(timeval.tv_usec)
+		self.preciseTimeInfo = PrecisionTimeInfo(seconds: timeval.tv_sec,
+		                                         nanoseconds: nanoseconds)
 	}
 }
 
