@@ -1,0 +1,5 @@
+module CLibBSD [system] {
+	header "header.h"
+	link "bsd"
+	export *
+}

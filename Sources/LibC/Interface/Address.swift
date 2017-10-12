@@ -4,11 +4,11 @@
 //
 
 public struct Address {
-	internal(set) public var ip: String
-	internal(set) public var mask: String
+	public let ip: String
+	public let mask: String
 	
-	internal init() {
-		self.ip = ""
-		self.mask = ""
+	internal init(ip: String, mask: String) {
+		self.ip = ip
+		self.mask = mask
 	}
 }

@@ -1,5 +1,5 @@
 //
-//  Interface_Unix.swift
+//  Interface_macOS.swift
 //  LibC
 //
 
@@ -18,14 +18,14 @@ extension Interface {
 		let MAC_Byte_Count = 6
 		if Int(socketAddress.pointee.sdl_alen) == MAC_Byte_Count {
 			var macAddressBytes = [UInt8](repeating: 0, count: MAC_Byte_Count)
-	
+			
 			let destination = macAddressBytes
 				.withUnsafeMutableBufferPointer { $0.baseAddress }
 			
 			var sourceData = socketAddress.pointee.sdl_data
 			let source = withUnsafePointer(to: &sourceData) {
 				UnsafeRawPointer($0)
-			}.advanced(by: Int(socketAddress.pointee.sdl_nlen))
+				}.advanced(by: Int(socketAddress.pointee.sdl_nlen))
 			
 			memcpy(destination, source, MAC_Byte_Count)
 			

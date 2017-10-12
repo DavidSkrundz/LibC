@@ -5,7 +5,7 @@
 
 import Foundation // Required for String(format: , _: ...)
 
-public struct MACAddress {
+public struct MACAddress: Equatable {
 	public static let Nil = MACAddress([0, 0, 0, 0, 0, 0])
 	
 	public let bytes: [UInt8]
@@ -26,4 +26,8 @@ extension MACAddress: CustomStringConvertible {
 			.map { String(format: "%02X", $0) }
 			.joined(separator: ":")
 	}
+}
+
+public func == (lhs: MACAddress, rhs: MACAddress) -> Bool {
+	return lhs.bytes == rhs.bytes
 }

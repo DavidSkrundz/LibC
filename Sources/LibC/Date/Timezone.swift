@@ -12,8 +12,8 @@ public struct Timezone {
 	public init() {
 		let tm = DateTime.currentDateTime()
 		timezoneInfo = TimezoneInfo(gmtOffset: tm.tm_gmtoff,
-									isDaylightSavings: tm.tm_isdst > 0,
-									abbreviation: String(cString: tm.tm_zone))
+		                            isDaylightSavings: tm.tm_isdst > 0,
+		                            abbreviation: String(cString: tm.tm_zone))
 	}
 	
 	internal init(_ time: tm) {

@@ -30,13 +30,7 @@ public struct Date {
 }
 
 extension Date: CustomStringConvertible {
-	// `Sat Jul 30 2016`
 	public var description: String {
-		return [
-			"\(self.dateInfo.weekDay)",
-			"\(self.dateInfo.month)",
-			"\(self.dateInfo.day)",
-			"\(self.dateInfo.year)",
-		].joined(separator: " ")
+		return "\(self.dateInfo)"
 	}
 }

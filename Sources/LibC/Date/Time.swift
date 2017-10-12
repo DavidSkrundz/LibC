@@ -34,12 +34,12 @@ public struct Time {
 }
 
 extension Time: CustomStringConvertible {
-	// 21:00:50
+	/// Example: 21:00:50
 	public var description: String {
 		return [
 			String(format: "%02d", self.timeInfo.hours),
 			String(format: "%02d", self.timeInfo.minutes),
-			String(format: "%02d", self.timeInfo.seconds),
-		].joined(separator: ":")
+			String(format: "%02d", self.timeInfo.seconds)
+			].joined(separator: ":")
 	}
 }

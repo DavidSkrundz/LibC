@@ -4,11 +4,11 @@
 //
 
 public struct InterfaceStatus {
-	internal(set) public var isUp: Bool
-	internal(set) public var isLoopback: Bool
+	public let isUp: Bool
+	public let isLoopback: Bool
 	
-	internal init() {
-		self.isUp = false
-		self.isLoopback = false
+	internal init(isUp: Bool, isLoopback: Bool) {
+		self.isUp = isUp
+		self.isLoopback = isLoopback
 	}
 }

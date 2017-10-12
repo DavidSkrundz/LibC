@@ -1,3 +1,4 @@
+// swift-tools-version:4.0
 //
 //  Package.swift
 //  LibC
@@ -7,22 +8,28 @@ import PackageDescription
 
 let package = Package(
 	name: "LibC",
-	dependencies: [
-		.Package(url: "https://github.com/DavidSkrundz/CLibC.git", majorVersion: 1, minor: 0),
-		.Package(url: "https://github.com/DavidSkrundz/UnicodeOperators.git", majorVersion: 1, minor: 0),
+	products: [
+		.library(
+			name: "LibC",
+			type: .static,
+			targets: ["LibC"]),
+		.library(
+			name: "LibC",
+			type: .dynamic,
+			targets: ["LibC"])
+	],
+	targets: [
+		.target(
+			name: "LibC",
+			dependencies: ["CLibC"]),
+		.testTarget(
+			name: "LibCTests",
+			dependencies: ["LibC"]),
+		.target(
+			name: "CLibC",
+			dependencies: ["CLibBSD"]),
+		.target(
+			name: "CLibBSD",
+			dependencies: [])
 	]
 )
-
-let staticLibrary = Product(
-	name: "LibC",
-	type: .Library(.Static),
-	modules: ["LibC"]
-)
-let dynamicLibrary = Product(
-	name: "LibC",
-	type: .Library(.Dynamic),
-	modules: ["LibC"]
-)
-
-products.append(staticLibrary)
-products.append(dynamicLibrary)

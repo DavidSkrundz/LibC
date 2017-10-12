@@ -6,7 +6,12 @@
 import CLibC
 
 public struct Directory {
-	public static func ChangeDirectory(to directory: String) throws {
+	/// Change working directory to the one specified
+	///
+	/// - Parameter directory: The directory to change to
+	///
+	/// - Throws: `DirectoryError`
+	public static func change(to directory: String) throws {
 		if chdir(directory) == 0 { return }
 		switch errno {
 			case EACCES:       throw DirectoryError.PermissionDenied
@@ -21,7 +26,8 @@ public struct Directory {
 		}
 	}
 	
-	public static func CurrentDirectory() -> String {
+	/// - Returns: The current working directory
+	public static func current() -> String {
 		let maxPathLength = pathconf(".", Int32(_PC_PATH_MAX))
 		let pathLength: Int = maxPathLength == -1 ? 1024 : maxPathLength
 		

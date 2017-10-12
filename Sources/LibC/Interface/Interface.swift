@@ -4,7 +4,6 @@
 //
 
 import CLibC
-import UnicodeOperators
 
 private enum AddressType {
 	case IPv4(String)
@@ -14,17 +13,21 @@ private enum AddressType {
 
 public struct Interface {
 	public let name: String
-	internal(set) public var status = InterfaceStatus()
-	internal(set) public var macAddress = MACAddress.Nil
-	internal(set) public var ipv4 = Address()
-	internal(set) public var ipv6 = Address()
+	public let status: InterfaceStatus
+	public let macAddress: MACAddress
+	private(set) public var ipv4 = [Address]()
+	private(set) public var ipv6 = [Address]()
 	
-	internal init(name: String) {
+	private init(name: String,
+	             status: InterfaceStatus,
+	             macAddress: MACAddress) {
 		self.name = name
+		self.status = status
+		self.macAddress = macAddress
 	}
 	
-	public static func Interfaces() -> [Interface] {
-		return self.getInterfaces().sorted(by: <)
+	public static func interfaces() -> [Interface] {
+		return self.getInterfaces()
 	}
 	
 	private static func getInterfaces() -> [Interface] {
@@ -39,13 +42,24 @@ public struct Interface {
 		let baseAddress = ifAddresses
 		while let ifAddress = ifAddresses?.pointee {
 			let name = self.getInterfaceName(ifAddress)
-			var interface = interfaces[name] ?? Interface(name: name)
 			
-			self.setIsUp(&interface, ifaddrs: ifAddress)
-			self.setIsLoopback(&interface, ifaddrs: ifAddress)
-			self.setAddress(&interface, ifaddrs: ifAddress)
-			self.setMask(&interface, ifaddrs: ifAddress)
-			self.setMAC(&interface, ifaddrs: ifAddress)
+			var interface: Interface
+			if let i = interfaces[name] {
+				interface = i
+			} else {
+				let status = self.getInterfaceStatus(ifAddress)
+				let mac = self.getMACAddress(ifAddress)
+				interface = Interface(name: name,
+				                      status: status,
+				                      macAddress: mac)
+			}
+			
+			let (type, address) = self.getAddress(ifAddress)
+			switch type {
+				case .IPv4(_): interface.ipv4.append(address)
+				case .IPv6(_): interface.ipv6.append(address)
+				case .None: ()
+			}
 			
 			interfaces[name] = interface
 			
@@ -57,52 +71,38 @@ public struct Interface {
 		return interfaces.map { $0.value }
 	}
 	
-	private static func getInterfaceName(_ ifAddress: ifaddrs) -> String {
-		return String(cString: ifAddress.ifa_name)
+	private static func getInterfaceName(_ addr: ifaddrs) -> String {
+		return String(cString: addr.ifa_name)
 	}
 	
-	private static func setIsUp(_ i: inout Interface, ifaddrs: ifaddrs) {
-		if ifaddrs.ifa_flags & UInt32(IFF_UP) != 0 {
-			i.status.isUp = true
+	private static func getInterfaceStatus(_ addr: ifaddrs) -> InterfaceStatus {
+		let isUp = addr.ifa_flags & UInt32(IFF_UP) != 0
+		let isLoopback = addr.ifa_flags & UInt32(IFF_LOOPBACK) != 0
+		return InterfaceStatus(isUp: isUp, isLoopback: isLoopback)
+	}
+	
+	private static func getMACAddress(_ addr: ifaddrs) -> MACAddress {
+		return self.getInterfaceMAC(addr) ?? .Nil
+	}
+	
+	private static func getAddress(_ addr: ifaddrs) -> (AddressType, Address) {
+		guard let ifaAddress = addr.ifa_addr else {
+			return (.None, Address(ip: "", mask: ""))
 		}
-	}
-	
-	private static func setIsLoopback(_ i: inout Interface, ifaddrs: ifaddrs) {
-		if ifaddrs.ifa_flags & UInt32(IFF_LOOPBACK) != 0 {
-			i.status.isLoopback = true
+		guard let ifaNetmask = addr.ifa_netmask else {
+			return (.None, Address(ip: "", mask: ""))
 		}
-	}
-	
-	private static func setAddress(_ i: inout Interface, ifaddrs: ifaddrs) {
-		switch self.getAddress(ifaddrs) {
-			case let .IPv4(address): i.ipv4.ip = address
-			case let .IPv6(address): i.ipv6.ip = address
-			case .None: ()
+		let ip = self.getAddr(sock: ifaAddress)
+		let mask = self.getAddr(sock: ifaNetmask)
+		
+		switch (ip, mask) {
+			case (.IPv4(let i), .IPv4(let m)):
+				return (.IPv4(""), Address(ip: i, mask: m))
+			case (.IPv6(let i), .IPv6(let m)):
+				return (.IPv6(""), Address(ip: i, mask: m))
+			default:
+				return (.None, Address(ip: "", mask: ""))
 		}
-	}
-	
-	private static func setMask(_ i: inout Interface, ifaddrs: ifaddrs) {
-		switch self.getMask(ifaddrs) {
-			case let .IPv4(mask): i.ipv4.mask = mask
-			case let .IPv6(mask): i.ipv6.mask = mask
-			case .None: ()
-		}
-	}
-	
-	private static func setMAC(_ i: inout Interface, ifaddrs: ifaddrs) {
-		if let macAddress = self.getInterfaceMAC(ifaddrs) {
-			i.macAddress = macAddress
-		}
-	}
-	
-	private static func getAddress(_ ifAddress: ifaddrs) -> AddressType {
-		guard let ifaAddress = ifAddress.ifa_addr else { return .None }
-		return self.getAddr(sock: ifaAddress)
-	}
-	
-	private static func getMask(_ ifAddress: ifaddrs) -> AddressType {
-		guard let ifaNetmask = ifAddress.ifa_netmask else { return .None }
-		return self.getAddr(sock: ifaNetmask)
 	}
 	
 	private static func getAddr(sock: UnsafePointer<sockaddr>) -> AddressType {
@@ -128,28 +128,4 @@ public struct Interface {
 		
 		return .None
 	}
-}
-
-private func <(lhs: Interface, rhs: Interface) -> Bool {
-	if (lhs.status.isUp == true) ≠ (rhs.status.isUp == true) {
-		return lhs.status.isUp
-	}
-	
-	if (lhs.ipv6.ip.isEmpty == true) ≠ (rhs.ipv6.ip.isEmpty == true) {
-		return rhs.ipv6.ip.isEmpty
-	}
-	
-	if (lhs.ipv4.ip.isEmpty == true) ≠ (rhs.ipv4.ip.isEmpty == true) {
-		return rhs.ipv4.ip.isEmpty
-	}
-	
-	if (lhs.macAddress.bytes == []) ≠ (rhs.macAddress.bytes == []) {
-		return rhs.macAddress.bytes.isEmpty
-	}
-	
-	if (lhs.status.isLoopback == true) ≠ (rhs.status.isLoopback == true) {
-		return rhs.status.isLoopback
-	}
-	
-	return lhs.name < rhs.name
 }

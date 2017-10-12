@@ -3,11 +3,12 @@
 //  LibC
 //
 
-@testable import LibCTests
 import XCTest
+@testable import LibCTests
 
 XCTMain([
 	testCase(DateTimeTests.allTests),
-	testCase(LibCTests.allTests),
+	testCase(DirectoryTests.allTests),
+	testCase(InterfaceTests.allTests),
 	testCase(RandomTests.allTests),
 ])
