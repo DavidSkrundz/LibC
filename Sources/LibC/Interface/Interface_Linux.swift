@@ -15,7 +15,7 @@ extension Interface {
 			strcpy(intPtr, ifAddress.ifa_name)
 		}
 		
-		let sock = Socket(family: .IPv4, type: .Datagram, protocol: .IP)
+		let sock = Socket(family: .IPv4, type: .Datagram, protocol: .IPv4)
 		guard let socket = sock else { return nil }
 		
 		if ioctl(socket.cSocket, UInt(SIOCGIFHWADDR), &ifr) == -1 { return nil }
