@@ -14,14 +14,14 @@ public struct Directory {
 	public static func change(to directory: String) throws {
 		if chdir(directory) == 0 { return }
 		switch errno {
-			case EACCES:       throw DirectoryError.PermissionDenied
-			case EFAULT:       throw DirectoryError.PathOutsideAddressableSpace
-			case EIO:          throw DirectoryError.IOError
-			case ELOOP:        throw DirectoryError.TooManySymbolicLinks
-			case ENAMETOOLONG: throw DirectoryError.PathTooLong
-			case ENOENT:       throw DirectoryError.FileDoesNotExist
-			case ENOMEM:       throw DirectoryError.InsufficienKernelMemory
-			case ENOTDIR:      throw DirectoryError.NotADirectory
+			case EACCES:       throw DirectoryError.permissionDenied
+			case EFAULT:       throw DirectoryError.pathOutsideAddressableSpace
+			case EIO:          throw DirectoryError.iOError
+			case ELOOP:        throw DirectoryError.tooManySymbolicLinks
+			case ENAMETOOLONG: throw DirectoryError.pathTooLong
+			case ENOENT:       throw DirectoryError.fileDoesNotExist
+			case ENOMEM:       throw DirectoryError.insufficienKernelMemory
+			case ENOTDIR:      throw DirectoryError.notADirectory
 			default: fatalError("Unexpected return code: \(errno)")
 		}
 	}

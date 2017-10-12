@@ -4,25 +4,25 @@
 //
 
 public enum Day: Int {
-	case Sunday = 0
-	case Monday
-	case Tuesday
-	case Wednesday
-	case Thursday
-	case Friday
-	case Saturday
+	case sunday = 0
+	case monday
+	case tuesday
+	case wednesday
+	case thursday
+	case friday
+	case saturday
 }
 
 extension Day: CustomStringConvertible {
 	public var description: String {
 		switch self {
-			case .Sunday:    return "Sun"
-			case .Monday:    return "Mon"
-			case .Tuesday:   return "Tue"
-			case .Wednesday: return "Wed"
-			case .Thursday:  return "Thu"
-			case .Friday:    return "Fri"
-			case .Saturday:  return "Sat"
+			case .sunday:    return "Sun"
+			case .monday:    return "Mon"
+			case .tuesday:   return "Tue"
+			case .wednesday: return "Wed"
+			case .thursday:  return "Thu"
+			case .friday:    return "Fri"
+			case .saturday:  return "Sat"
 		}
 	}
 }

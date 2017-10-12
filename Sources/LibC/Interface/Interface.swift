@@ -8,7 +8,7 @@ import CLibC
 private enum AddressType {
 	case IPv4(String)
 	case IPv6(String)
-	case None
+	case none
 }
 
 public struct Interface {
@@ -27,7 +27,7 @@ public struct Interface {
 	}
 	
 	public static func interfaces() -> [Interface] {
-		return self.getInterfaces()
+		return self.getInterfaces().sorted(by: <)
 	}
 	
 	private static func getInterfaces() -> [Interface] {
@@ -58,7 +58,7 @@ public struct Interface {
 			switch type {
 				case .IPv4(_): interface.ipv4.append(address)
 				case .IPv6(_): interface.ipv6.append(address)
-				case .None: ()
+				case .none: ()
 			}
 			
 			interfaces[name] = interface
@@ -87,10 +87,10 @@ public struct Interface {
 	
 	private static func getAddress(_ addr: ifaddrs) -> (AddressType, Address) {
 		guard let ifaAddress = addr.ifa_addr else {
-			return (.None, Address(ip: "", mask: ""))
+			return (.none, Address(ip: "", mask: ""))
 		}
 		guard let ifaNetmask = addr.ifa_netmask else {
-			return (.None, Address(ip: "", mask: ""))
+			return (.none, Address(ip: "", mask: ""))
 		}
 		let ip = self.getAddr(sock: ifaAddress)
 		let mask = self.getAddr(sock: ifaNetmask)
@@ -101,7 +101,7 @@ public struct Interface {
 			case (.IPv6(let i), .IPv6(let m)):
 				return (.IPv6(""), Address(ip: i, mask: m))
 			default:
-				return (.None, Address(ip: "", mask: ""))
+				return (.none, Address(ip: "", mask: ""))
 		}
 	}
 	
@@ -126,6 +126,32 @@ public struct Interface {
 			return .IPv6(String(cString: strBytes))
 		}
 		
-		return .None
+		return .none
 	}
+}
+
+extension Interface: Comparable {}
+
+public func == (lhs: Interface, rhs: Interface) -> Bool {
+	return lhs.name == rhs.name && lhs.macAddress == rhs.macAddress
+}
+
+public func < (lhs: Interface, rhs: Interface) -> Bool {
+	if (lhs.status.isUp != rhs.status.isUp) {
+		return lhs.status.isUp
+	}
+	
+	if (lhs.ipv4.count != rhs.ipv4.count) {
+		return lhs.ipv4.count > rhs.ipv4.count
+	}
+	
+	if (lhs.ipv6.count != rhs.ipv6.count) {
+		return lhs.ipv6.count > rhs.ipv6.count
+	}
+	
+	if (lhs.status.isLoopback != rhs.status.isLoopback) {
+		return lhs.status.isLoopback
+	}
+	
+	return lhs.name < rhs.name
 }

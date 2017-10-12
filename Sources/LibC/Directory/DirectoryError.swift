@@ -4,12 +4,12 @@
 //
 
 public enum DirectoryError: Error {
-	case PermissionDenied
-	case PathOutsideAddressableSpace
-	case IOError
-	case TooManySymbolicLinks
-	case PathTooLong
-	case FileDoesNotExist
-	case InsufficienKernelMemory
-	case NotADirectory
+	case permissionDenied
+	case pathOutsideAddressableSpace
+	case iOError
+	case tooManySymbolicLinks
+	case pathTooLong
+	case fileDoesNotExist
+	case insufficienKernelMemory
+	case notADirectory
 }
