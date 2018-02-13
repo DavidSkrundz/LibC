@@ -35,6 +35,16 @@ let d = Directory.current()
 try Directory.change(to: "..")
 ```
 
+###### Dynamic Linker
+```Swift
+let handle = try DL.open("/path/to/lib", .now)
+let mult = try DL.symbol(handle, "mult") // mult(Int, Int) -> Int { return $0 * $1 }
+let multFunc = main.asFunction(((Int, Int) -> Int).self)
+let result = multFunc(5, 3) // 15
+mainFunc = nil
+try DL.close(handle)
+```
+
 Prerequisites
 -------------
 
