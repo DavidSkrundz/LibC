@@ -66,7 +66,7 @@ public struct Interface {
 			ifAddresses = ifAddress.ifa_next
 		}
 		freeifaddrs(baseAddress)
-		ifAddresses_.deallocate(capacity: 1)
+		ifAddresses_.deallocate()
 		
 		return interfaces.map { $0.value }
 	}

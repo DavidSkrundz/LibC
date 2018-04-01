@@ -24,33 +24,4 @@ public struct DL {
 		}
 		return DLHandle(handle: handle)
 	}
-	
-	/// Get a symbol from a library
-	///
-	/// - Throws: `DLError.symbol`
-	public static func symbol(handle: DLHandle,
-							  name: String) throws -> DLSymbol {
-		let sym = dlsym(handle.handle, name)
-		guard let symbol = sym else {
-			if let errorString = dlerror() {
-				throw DLError.symbol(String(cString: errorString))
-			}
-			throw DLError.symbol("Unknown error")
-		}
-		return DLSymbol(symbol: symbol)
-	}
-	
-	/// Close a dynamic library
-	///
-	/// - Throws: `DLError.close`
-	public static func close(handle: DLHandle) throws {
-		let close = dlclose(handle.handle)
-		if close != 0 {
-			if let errorString = dlerror() {
-				throw DLError.close(String(cString: errorString))
-			}
-			throw DLError.close("Unknown error")
-		}
-	}
-	
 }

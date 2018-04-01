@@ -1,4 +1,4 @@
-// swift-tools-version:4.0
+// swift-tools-version:4.1
 //
 //  Package.swift
 //  LibC
@@ -10,11 +10,11 @@ let package = Package(
 	name: "LibC",
 	products: [
 		.library(
-			name: "LibC",
+			name: "sLibC",
 			type: .static,
 			targets: ["LibC"]),
 		.library(
-			name: "LibC",
+			name: "dLibC",
 			type: .dynamic,
 			targets: ["LibC"])
 	],
