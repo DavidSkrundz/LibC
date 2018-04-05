@@ -10,6 +10,9 @@ let package = Package(
 	name: "LibC",
 	products: [
 		.library(
+			name: "LibC",
+			targets: ["LibC"]),
+		.library(
 			name: "sLibC",
 			type: .static,
 			targets: ["LibC"]),
