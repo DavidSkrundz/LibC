@@ -27,7 +27,3 @@ extension MACAddress: CustomStringConvertible {
 			.joined(separator: ":")
 	}
 }
-
-public func == (lhs: MACAddress, rhs: MACAddress) -> Bool {
-	return lhs.bytes == rhs.bytes
-}
