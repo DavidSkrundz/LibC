@@ -13,11 +13,6 @@
 
 Wrapper for some C stuff
 
-## Prerequisites
-
-###### Linux
-`sudo apt-get install libbsd-dev`
-
 ## Importing
 
 ```Swift

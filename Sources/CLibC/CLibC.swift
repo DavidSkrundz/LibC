@@ -5,8 +5,6 @@
 
 #if os(Linux)
 	@_exported import Glibc
-	
-	@_exported import CLibBSD
 #endif
 
 #if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)

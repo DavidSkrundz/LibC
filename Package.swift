@@ -30,9 +30,6 @@ let package = Package(
 			dependencies: ["LibC"]),
 		.target(
 			name: "CLibC",
-			dependencies: ["CLibBSD"]),
-		.target(
-			name: "CLibBSD",
 			dependencies: [])
 	]
 )
