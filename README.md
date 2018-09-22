@@ -20,27 +20,32 @@ Wrapper for some C stuff
 ```
 
 ## FixedWidthInteger
+
 ```Swift
 static func random() -> Self
 static func random<T: RandomNumberGenerator>(using: inout T) -> Self
 ```
 
 ## `DateTime`
+
 ```Swift
 let dateTime = DateTime()
 ```
 
 ## `Interface`
+
 ```Swift
 let i: [Interface] = Interface.interfaces()
 ```
 
 ## `Socket`
+
 ```Swift
 let s = Socket(family: .IPv4, type: .Datagram, protocol: .IP)
 ```
 
 ## `Directory`
+
 ```Swift
 let d = Directory.current()
 try Directory.change(to: "..")
