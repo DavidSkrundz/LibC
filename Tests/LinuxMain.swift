@@ -7,8 +7,8 @@ import XCTest
 @testable import LibCTests
 
 XCTMain([
-	testCase(DateTimeTests.allTests),
-	testCase(DirectoryTests.allTests),
-	testCase(InterfaceTests.allTests),
-	testCase(RandomTests.allTests),
+	testCase(DateTimeTests.allTests.shuffled()),
+	testCase(DirectoryTests.allTests.shuffled()),
+	testCase(InterfaceTests.allTests.shuffled()),
+	testCase(RandomTests.allTests.shuffled()),
 ])

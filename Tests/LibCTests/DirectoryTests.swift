@@ -6,7 +6,7 @@
 import XCTest
 import LibC
 
-class DirectoryTests: XCTestCase {
+final class DirectoryTests: XCTestCase {
 	func testDirectory() {
 		print(Directory.current())
 		do {
@@ -14,8 +14,10 @@ class DirectoryTests: XCTestCase {
 		} catch {}
 		print(Directory.current())
 	}
-	
+}
+
+extension DirectoryTests: TestCase {
 	static var allTests = [
-		("testDirectory", testDirectory)
+		("testDirectory", testDirectory),
 	]
 }

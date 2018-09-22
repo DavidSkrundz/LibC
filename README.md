@@ -1,52 +1,52 @@
-LibC [![Swift Version](https://img.shields.io/badge/Swift-4.1-orange.svg)](https://swift.org/download/#releases) [![Platforms](https://img.shields.io/badge/Platforms-macOS%20|%20Linux-lightgray.svg)](https://swift.org/download/#releases) [![Build Status](https://travis-ci.org/DavidSkrundz/LibC.svg?branch=master)](https://travis-ci.org/DavidSkrundz/LibC) [![Codebeat Status](https://codebeat.co/badges/ef1bd196-3a7c-41c5-a1fd-3a5c2f6aea55)](https://codebeat.co/projects/github-com-davidskrundz-libc) [![Codecov](https://codecov.io/gh/DavidSkrundz/LibC/branch/master/graph/badge.svg)](https://codecov.io/gh/DavidSkrundz/LibC)
-====
+# LibC
 
-A limited Swift wrapper around standard C libraries
+[![](https://img.shields.io/badge/Swift-4.2-orange.svg)][1]
+[![](https://img.shields.io/badge/os-macOS%20|%20Linux-lightgray.svg)][1]
+[![](https://travis-ci.com/DavidSkrundz/LibC.svg?branch=master)][2]
+[![Codebeat Status](https://codebeat.co/badges/ef1bd196-3a7c-41c5-a1fd-3a5c2f6aea55)][3]
+[![Codecov](https://codecov.io/gh/DavidSkrundz/LibC/branch/master/graph/badge.svg)][4]
 
+[1]: https://swift.org/download/#releases
+[2]: https://travis-ci.com/DavidSkrundz/LibC
+[3]: https://codebeat.co/projects/github-com-davidskrundz-libc
+[4]: https://codecov.io/gh/DavidSkrundz/LibC
 
-Features
---------
+Wrapper for some C stuff
 
-###### DateTime
+## Prerequisites
+
+###### Linux
+`sudo apt-get install libbsd-dev`
+
+## Importing
+
+```Swift
+.package(url: "https://github.com/DavidSkrundz/LibC.git", .upToNextMinor(from: "1.3.0"))
+```
+
+## FixedWidthInteger
+```Swift
+static func random() -> Self
+static func random<T: RandomNumberGenerator>(using: inout T) -> Self
+```
+
+## `DateTime`
 ```Swift
 let dateTime = DateTime()
 ```
 
-###### Random
+## `Interface`
 ```Swift
-let a = UInt8.random() // 0...UInt8.max
-let b = UInt32.random(max: 10) // 0..<10
-let c = Double.random() // 0.0...1.0
+let i: [Interface] = Interface.interfaces()
 ```
 
-###### Interface
-```Swift
-let i = Interface.interfaces() // [Interface]
-```
-
-###### Socket
+## `Socket`
 ```Swift
 let s = Socket(family: .IPv4, type: .Datagram, protocol: .IP)
 ```
 
-###### Directory
+## `Directory`
 ```Swift
 let d = Directory.current()
 try Directory.change(to: "..")
 ```
-
-###### Dynamic Linker
-```Swift
-let handle = try DL.open("/path/to/lib", .now)
-let mult = try handle.symbol(handle, "mult") // mult(Int, Int) -> Int { return $0 * $1 }
-let multFunc = main.as(((Int, Int) -> Int).self)
-let result = multFunc(5, 3) // 15
-mainFunc = nil
-try handle.close()
-```
-
-Prerequisites
--------------
-
-###### Linux
-`$ sudo apt-get install libbsd-dev`

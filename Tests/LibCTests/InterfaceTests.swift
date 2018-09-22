@@ -6,12 +6,14 @@
 import XCTest
 import LibC
 
-class InterfaceTests: XCTestCase {
+final class InterfaceTests: XCTestCase {
 	func testMAC() {
 		Interface.interfaces().forEach { print($0) }
 	}
-	
+}
+
+extension InterfaceTests: TestCase {
 	static var allTests = [
-		("testMAC", testMAC)
+		("testMAC", testMAC),
 	]
 }

@@ -6,7 +6,7 @@
 import XCTest
 import LibC
 
-class DateTimeTests: XCTestCase {
+final class DateTimeTests: XCTestCase {
 	func testCDescription() {
 		let dateTime = DateTime()
 		print(dateTime.time.preciseTimeInfo.ticksSince1970)
@@ -40,11 +40,13 @@ class DateTimeTests: XCTestCase {
 			i += 1
 		}
 	}
-	
+}
+
+extension DateTimeTests: TestCase {
 	static var allTests = [
 		("testCDescription", testCDescription),
 		("testDescription", testDescription),
 		("testNowInit", testNowInit),
-		("testPrintDayMonth", testPrintDayMonth)
+		("testPrintDayMonth", testPrintDayMonth),
 	]
 }

@@ -6,26 +6,15 @@
 import CLibC
 
 extension FixedWidthInteger {
-	/// Generate a random number in `(T.min...T.max)`
-	///
-	/// - Returns: A random integer
+	/// - Returns: A random value in `T.min...T.max`
 	public static func random() -> Self {
-		var number = Self(0)
-		arc4random_buf(&number, MemoryLayout<Self>.size)
-		return number
+		return Self.random(in: Self.min...self.max)
 	}
 	
-	/// Generate a random number in `(T.min..<max)`
+	/// Returns a random value using the generator as a source for randomness
 	///
-	/// - Parameter max: The upper bound of the random number
-	///
-	/// - Returns: A random integer
-	public static func random(max: Self) -> Self {
-		let range = Self.max - (Self.max % max)
-		var number = Self(0)
-		repeat {
-			arc4random_buf(&number, MemoryLayout<Self>.size)
-		} while number >= range
-		return number % max
+	/// - Returns: A random value in `T.min...T.max`
+	public static func random<T: RandomNumberGenerator>(using: inout T) -> Self {
+		return Self.random(in: Self.min...self.max, using: &using)
 	}
 }
