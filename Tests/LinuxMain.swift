@@ -3,12 +3,9 @@
 //  LibC
 //
 
-import XCTest
-@testable import LibCTests
+#if os(Linux)
+import SwiftGlibc.C.stdlib
+#endif
 
-XCTMain([
-	testCase(DateTimeTests.allTests.shuffled()),
-	testCase(DirectoryTests.allTests.shuffled()),
-	testCase(InterfaceTests.allTests.shuffled()),
-	testCase(RandomTests.allTests.shuffled()),
-])
+print("Run the tests with `swift test --enable-test-discovery`.")
+exit(1)

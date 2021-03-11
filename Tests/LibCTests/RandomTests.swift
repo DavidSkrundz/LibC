@@ -11,9 +11,3 @@ final class RandomTests: XCTestCase {
 		_ = Int8.random()
 	}
 }
-
-extension RandomTests: TestCase {
-	static var allTests = [
-		("testRandom", testRandom),
-	]
-}

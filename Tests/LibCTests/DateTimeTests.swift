@@ -41,12 +41,3 @@ final class DateTimeTests: XCTestCase {
 		}
 	}
 }
-
-extension DateTimeTests: TestCase {
-	static var allTests = [
-		("testCDescription", testCDescription),
-		("testDescription", testDescription),
-		("testNowInit", testNowInit),
-		("testPrintDayMonth", testPrintDayMonth),
-	]
-}

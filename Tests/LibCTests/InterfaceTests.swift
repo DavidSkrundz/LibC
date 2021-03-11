@@ -11,9 +11,3 @@ final class InterfaceTests: XCTestCase {
 		Interface.interfaces().forEach { print($0) }
 	}
 }
-
-extension InterfaceTests: TestCase {
-	static var allTests = [
-		("testMAC", testMAC),
-	]
-}

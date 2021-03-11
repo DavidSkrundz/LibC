@@ -15,9 +15,3 @@ final class DirectoryTests: XCTestCase {
 		print(Directory.current())
 	}
 }
-
-extension DirectoryTests: TestCase {
-	static var allTests = [
-		("testDirectory", testDirectory),
-	]
-}
